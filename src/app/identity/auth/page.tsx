@@ -19,6 +19,7 @@ export default function AuthPage() {
         id="contrast-style"
         rel="stylesheet"
         href="/eventim/css/patterns-contrast.css"
+        // @ts-ignore
         disabled
       />
 
