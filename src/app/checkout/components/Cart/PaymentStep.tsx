@@ -1,65 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface PaymentStepProps {
   onBack: () => void;
-  onContinue: () => void; // vai para "validacao"
+  onContinue: () => void;
   cart: any;
 }
 
 export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepProps) {
+  const router = useRouter();
   const [method, setMethod] = useState<"pix" | "card" | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [pix, setPix] = useState<any>(null);
+  const [cardWarning, setCardWarning] = useState(false);
 
-  const createPix = async () => {
-    setLoading(true);
+  const handleProceed = () => {
+    if (method === "pix") {
+      // monta dados na URL e vai para /checkout/pix
+      const params = new URLSearchParams({
+        amount: String(cart.total),
+        title: cart.setor,
+        unitPrice: String(cart.preco),
+        quantity: "1",
+        name: cart.nome ?? "Cliente",
+        email: cart.email ?? "cliente@email.com",
+        phone: cart.phone ?? "00000000000",
+        cpf: cart.cpf ?? "00000000000",
+      });
 
-    const body = {
-      paymentMethod: "PIX",
-      amount: cart.total,
-      customer: {
-        name: "Cliente",
-        email: "cliente@email.com",
-      },
-      items: [
-        {
-          title: cart.setor,
-          unitPrice: cart.preco,
-          quantity: 1,
-        },
-      ],
-    };
-
-    const res = await fetch("/api/pix/create", {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-
-    const data = await res.json();
-
-    setPix({
-      id: data.id,
-      qr: data.pix.qrCode,
-      copia: data.pix.copyPaste,
-    });
-
-    startPolling(data.id);
-
-    setLoading(false);
-  };
-
-  const startPolling = (id: string) => {
-    const interval = setInterval(async () => {
-      const res = await fetch(`/api/pix/check?id=${id}`);
-      const check = await res.json();
-
-      if (check.paid) {
-        clearInterval(interval);
-        onContinue();
-      }
-    }, 5000);
+      router.push(`/checkout/pix?${params.toString()}`);
+    } else {
+      setCardWarning(true);
+    }
   };
 
   return (
@@ -87,7 +59,7 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                 aria-checked={method === "pix"}
                 onClick={() => {
                   setMethod("pix");
-                  createPix();
+                  setCardWarning(false);
                 }}
               >
                 <div className="sl-radiobutton ng-star-inserted">
@@ -113,7 +85,7 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                 </div>
               </li>
 
-              {/* CARTÃO */}
+              {/* CARTÃO – indisponível */}
               <li
                 role="radio"
                 className={
@@ -124,7 +96,7 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                 aria-checked={method === "card"}
                 onClick={() => {
                   setMethod("card");
-                  setPix(null);
+                  setCardWarning(true);
                 }}
               >
                 <div className="sl-radiobutton ng-star-inserted">
@@ -143,8 +115,8 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                   <span className="sl-title theme-text-color">
                     Pagamento com Cartão de Crédito
                   </span>
-                  <span className="sl-info ng-star-inserted">
-                    Visa, MasterCard, ELO, American Express…
+                  <span className="sl-info ng-star-inserted" style={{ color: "#d9534f" }}>
+                    Indisponível no momento — recomendamos PIX
                   </span>
                 </div>
 
@@ -154,35 +126,43 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
               </li>
 
             </ul>
-          </div>
 
-          {/* PIX GERADO */}
-          {method === "pix" && pix && (
-            <div className="col-xs-12" style={{ marginTop: 20 }}>
-              <h3>Pague com PIX</h3>
+            {/* MENSAGEM DE CARTÃO INDISPONÍVEL */}
+            {cardWarning && (
+              <div
+                style={{
+                  background: "#fff2f2",
+                  border: "1px solid #ffcccc",
+                  padding: 12,
+                  borderRadius: 8,
+                  marginTop: 10,
+                }}
+              >
+                <strong style={{ color: "#c30000" }}>Pagamento com cartão indisponível.</strong>
+                <p style={{ margin: "6px 0 0 0", color: "#7a0000" }}>
+                  Estamos com instabilidade nas operadoras. Utilize PIX para concluir seu pedido.
+                </p>
+              </div>
+            )}
 
-              <img
-                src={`data:image/png;base64,${pix.qr}`}
-                style={{ width: 200, height: 200 }}
-              />
-
-              <textarea
-                readOnly
-                value={pix.copia}
-                style={{ width: "100%", height: 80, marginTop: 10 }}
-              />
-
+            {/* BOTÕES */}
+            <div style={{ marginTop: 20 }}>
               <button
                 className="btn btn-primary btn-lg btn-block"
-                onClick={() => navigator.clipboard.writeText(pix.copia)}
+                onClick={handleProceed}
               >
-                Copiar código PIX
+                Prosseguir
               </button>
 
-              <p style={{ marginTop: 10 }}>Aguardando pagamento...</p>
+              <button
+                className="btn btn-default btn-lg btn-block"
+                onClick={onBack}
+                style={{ marginTop: 10 }}
+              >
+                Voltar
+              </button>
             </div>
-          )}
-
+          </div>
 
         </div>
       </div>
