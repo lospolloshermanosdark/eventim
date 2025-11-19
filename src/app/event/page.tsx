@@ -5,7 +5,6 @@ import { Accessibility } from "./components/accessibility";
 import Header from "./components/Header/Header";
 import StageArtwork from "./components/StageArtwork/StageArtwork";
 import TicketSelectionBox from "./components/TicketSelectionBox";
-import { TicketSelection } from "./components/TicketSelection/TicketSelection";
 import TicketSelectionFull from "./components/TicketSelection/TicketSelectionFull";
 import { MoreInfo } from "./components/MoreInfo";
 import { AdditionalBanner } from "./components/AdditionalBanner";
@@ -27,6 +26,7 @@ export default function EventPage() {
         id="contrast-style"
         rel="stylesheet"
         href="/eventim/css/patterns-contrast.css"
+        // @ts-ignore
         disabled
       />
 

@@ -92,6 +92,7 @@ export default function CartPage() {
                   <PaymentStep
                     onContinue={nextStep}
                     onBack={() => setStep("entrega")}
+                    cart={cart}
                   />
                 )}
 

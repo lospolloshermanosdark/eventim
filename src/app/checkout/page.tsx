@@ -10,75 +10,72 @@ import FooterEventim from "./components/FooterEventim";
 import ProgressBar from "./components/ProgressBar";
 
 export default function CheckoutPage() {
-    const searchParams = useSearchParams();
+  const searchParams = useSearchParams();
 
-    const ticketId = searchParams.get("ticketId");
-    const nome = searchParams.get("nome");
-    const preco = searchParams.get("preco");
-    const qtd = searchParams.get("qtd");
+  const ticketId = searchParams.get("ticketId");
+  const nome = searchParams.get("nome");
+  const preco = searchParams.get("preco");
+  const qtd = searchParams.get("qtd");
 
-    // formata preço
-    const precoFormatado = preco
-        ? (Number(preco) / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
+  // formata preço
+  const precoFormatado = preco
+    ? (Number(preco) / 100).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      })
+    : "R$ 0,00";
+
+  const subtotal =
+    qtd && preco
+      ? ((Number(preco) * Number(qtd)) / 100).toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
         })
-        : "R$ 0,00";
+      : "R$ 0,00";
 
-    const subtotal = qtd && preco
-        ? ((Number(preco) * Number(qtd)) / 100).toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-        })
-        : "R$ 0,00";
+  return (
+    <>
+      {/* CSS padrão local */}
+      <link
+        id="ev-style-sheet"
+        rel="stylesheet"
+        href="/eventim/css/patterns.css"
+      />
 
-    return (
-        <>
+      {/* CSS contraste local */}
+      <link
+        id="contrast-style"
+        rel="stylesheet"
+        href="/eventim/css/patterns-contrast.css"
+        // @ts-ignore
 
-            {/* CSS padrão local */}
-            <link
-                id="ev-style-sheet"
-                rel="stylesheet"
-                href="/eventim/css/patterns.css"
-            />
+        disabled
+      />
+      <link rel="stylesheet" href="/eventim/css/checkout.css" />
 
-            {/* CSS contraste local */}
-            <link
-                id="contrast-style"
-                rel="stylesheet"
-                href="/eventim/css/patterns-contrast.css"
-                disabled
-            />
-            <link rel="stylesheet" href="/eventim/css/checkout.css" />
+      {/* Acessibilidade */}
+      <Accessibility />
 
-            {/* Acessibilidade */}
-            <Accessibility />
+      {/* Script original em React -> controla zoom/contraste */}
+      <AccessibilityScript />
 
-            {/* Script original em React -> controla zoom/contraste */}
-            <AccessibilityScript />
+      <div
+        className="checkout-wrapper-container"
+        style={{ background: "#e5e5e5" }}
+      >
+        <div className="wrapper wrapper-container">
+          <div className="wrapper max-container-width">
+            {/* HEADER */}
+            <HeaderCheckout />
 
-            <div className="checkout-wrapper-container" style={{ background: "#e5e5e5" }}>
-                <div className="wrapper wrapper-container">
-                    <div className="wrapper max-container-width">
+            {/* MAIN */}
+            <CartPage />
 
-                        {/* HEADER */}
-                        <HeaderCheckout />
-
-                        {/* MAIN */}
-                        <CartPage />
-
-                        {/* FOOTER */}
-                        <FooterEventim />
-
-                    </div>
-                </div>
-            </div>
-
-
-        </>
-
-
-    );
+            {/* FOOTER */}
+            <FooterEventim />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
-
-

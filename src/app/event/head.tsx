@@ -11,6 +11,8 @@ export default function Head() {
         id="contrast-style"
         rel="stylesheet"
         href="/eventim/css/patterns-contrast.css"
+        // @ts-ignore
+
         disabled
       />
     </>

@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Logo from "./Logo";
-import NavDesktop from "./NavDesktop";
-import SearchBar from "./SearchBar";
-import Actions from "./Actions";
-import MobileMenu from "./MobileMenu";
+
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState<null | "events" | "cities">(null);
