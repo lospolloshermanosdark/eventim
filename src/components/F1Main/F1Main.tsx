@@ -2692,70 +2692,70 @@ export default function F1Main() {
                               <ul>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=setor-a"
                                     class="internalLink tixLinkArquibancada"
                                     >SETOR A</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=setor-b"
                                     class="internalLink tixLinkArquibancada"
                                     >SETOR B</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=setor-d"
                                     class="internalLink tixLinkArquibancada"
                                     >SETOR D</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=setor-g"
                                     class="internalLink tixLinkArquibancada"
                                     >SETOR G</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=setor-h"
                                     class="internalLink tixLinkArquibancada"
                                     >SETOR H</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=setor-m"
                                     class="internalLink tixLinkArquibancada"
                                     >SETOR M</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=setor-r"
                                     class="internalLink tixLinkArquibancada"
                                     >SETOR R</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=orange-tree-club"
                                     class="internalLink tixLinkPremium"
                                     >Orange Tree Club</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=pit-stop-club"
                                     class="internalLink tixLinkPremium"
                                     >Pit Stop Club</a
                                   >
                                 </li>
                                 <li>
                                   <a
-                                    href="#"
+                                    href="/event?id=grand-prix-club"
                                     class="internalLink tixLinkVip"
                                     >Grand Prix Club</a
                                   >

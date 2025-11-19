@@ -26,8 +26,6 @@ export default function Page() {
       <div id="place-ad-top-duplicate" className="center text-center" />
 
       <F1Header />
-      {/* 🔥 AQUI ENTRA O RESTANTE DO SEU CONTEÚDO DA LANDING PAGE */}
-
       <F1Main />
       <Footer />
     </>

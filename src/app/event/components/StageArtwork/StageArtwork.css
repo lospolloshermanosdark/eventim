@@ -1,0 +1,24 @@
+.artwork {
+  color: #ffffff;
+}
+
+/* Desktop */
+@media (min-width: 660px) {
+  .artwork {
+    background-color: #000000;
+  }
+
+  .gradient-left {
+    background: linear-gradient(to right, #000000, transparent);
+  }
+
+  .gradient-right {
+    background: linear-gradient(to left, #000000, transparent);
+  }
+}
+
+.artwork-image {
+  background-image: url("/eventim/assets/F12026-eventim-artwork.png");
+  background-size: cover;
+  background-position: center;
+}

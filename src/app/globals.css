@@ -468,3 +468,20 @@ SEM ALTERAR NADA */
 .font-f1 { font-family: var(--font-formula1); }
 
 
+
+
+.cta-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.cta-hidden {
+  opacity: 0 !important;
+  transform: translateY(8px) !important;
+  pointer-events: none !important;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+
