@@ -49,11 +49,11 @@ export default function CartMain({
           </span>
         </span>
 
-        <div className="main-ticket-card-headline-button-wrapper visible-sm visible-xs margin-left-m">
+        {/* <div className="main-ticket-card-headline-button-wrapper visible-sm visible-xs margin-left-m">
           <button className="main-ticket-card-headline-button btn btn-primary btn-sm theme-btn">
             Continuar
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* CARD DO INGRESSO */}

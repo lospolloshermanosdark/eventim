@@ -11,7 +11,9 @@ import PaymentStep from "./PaymentStep";
 
 export default function CartPage() {
   const [cart, setCart] = useState<any>(null);
-  const [step, setStep] = useState<"carrinho" | "entrega" | "pagamento" | "validacao">("carrinho");
+  const [step, setStep] = useState<
+    "carrinho" | "entrega" | "pagamento" | "validacao"
+  >("carrinho");
 
   useEffect(() => {
     // 1. Ler parâmetros da URL
@@ -48,7 +50,7 @@ export default function CartPage() {
     return <p style={{ padding: 20 }}>Carregando carrinho…</p>;
   }
   const nextStep = () => {
-    setStep(prev => {
+    setStep((prev) => {
       if (prev === "carrinho") return "entrega";
       if (prev === "entrega") return "pagamento";
       if (prev === "pagamento") return "validacao";
@@ -58,13 +60,11 @@ export default function CartPage() {
 
   return (
     <main className="main-content container" style={{ minHeight: "73vh" }}>
-
       <div className="row">
         <div className="col-xs-12">
           <div className="shoppingCartPage">
             <div className="main-ticket-card">
               <div className="row">
-
                 {/* etapa inicial - sem o <ProgressBar /> */}
 
                 {step === "carrinho" && (
@@ -100,12 +100,12 @@ export default function CartPage() {
                   <PaymentValidation />
                 )} */}
 
-
                 <div className="col-xs-12 col-md-4 sidebar">
                   <ReservationTimer />
                   <CartSummary
                     quantity={1}
                     eventName={cart.setor}
+                    hideActions={step === "pagamento"}
                     price={`R$ ${cart.preco.toLocaleString("pt-BR")},00`}
                     venue="Autódromo de São Paulo — F1 2026"
                     date="31 de Outubro a 02 de Novembro"
@@ -118,21 +118,15 @@ export default function CartPage() {
                       step === "entrega"
                         ? () => setStep("carrinho")
                         : step === "pagamento"
-                          ? () => setStep("entrega")
-                          : undefined
+                        ? () => setStep("entrega")
+                        : undefined
                     }
                   />
-
-
-
                 </div>
-
               </div>
             </div>
           </div>
-
         </div>
-
       </div>
     </main>
   );

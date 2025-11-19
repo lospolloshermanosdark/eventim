@@ -12,11 +12,9 @@ interface PaymentStepProps {
 export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepProps) {
   const router = useRouter();
   const [method, setMethod] = useState<"pix" | "card" | null>(null);
-  const [cardWarning, setCardWarning] = useState(false);
 
   const handleProceed = () => {
     if (method === "pix") {
-      // monta dados na URL e vai para /checkout/pix
       const params = new URLSearchParams({
         amount: String(cart.total),
         title: cart.setor,
@@ -29,8 +27,6 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
       });
 
       router.push(`/checkout/pix?${params.toString()}`);
-    } else {
-      setCardWarning(true);
     }
   };
 
@@ -45,119 +41,128 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
               Escolha sua Forma de Pagamento
             </h2>
 
-            {/* LISTA */}
             <ul data-qa="list" className="selection-list">
 
-              {/* PIX */}
+              {/* ===================== */}
+              {/*       PIX            */}
+              {/* ===================== */}
               <li
                 role="radio"
                 className={
-                  "selection-list-item no-margin selection-list-border ng-star-inserted " +
+                  "selection-list-item no-margin selection-list-border " +
                   (method === "pix" ? "selected" : "")
                 }
                 tabIndex={0}
                 aria-checked={method === "pix"}
-                onClick={() => {
-                  setMethod("pix");
-                  setCardWarning(false);
+                onClick={() => setMethod("pix")}
+                style={{
+                  border: method === "pix" ? "2px solid #0B74FF" : "1px solid #ddd",
+                  borderRadius: 10,
+                  padding: 12,
+                  cursor: "pointer",
                 }}
               >
-                <div className="sl-radiobutton ng-star-inserted">
+                <div className="sl-radiobutton">
                   <div className="styled-checkbox theme-switch-bg theme-switch-border no-padding-right">
-                    <input
-                      type="radio"
-                      className="radio-input"
-                      checked={method === "pix"}
-                      readOnly
-                    />
+                    <input type="checkbox" checked={method === "pix"} readOnly />
                     <label className="label"></label>
                   </div>
                 </div>
 
-                <div className="sl-description ng-star-inserted">
-                  <span className="sl-title theme-text-color" title="PIX">
-                    PIX
-                  </span>
+                <div className="sl-description">
+                  <span className="sl-title theme-text-color" title="PIX">PIX</span>
+                  <span className="sl-info">Pagamento instantâneo</span>
                 </div>
 
-                <div className="sl-icon ng-star-inserted">
+                <div className="sl-icon">
                   <i className="icon icon-card theme-text-variant-color"></i>
                 </div>
               </li>
 
-              {/* CARTÃO – indisponível */}
+              {/* ===================== */}
+              {/*   CARTÃO INDISPONÍVEL */}
+              {/* ===================== */}
               <li
                 role="radio"
                 className={
-                  "selection-list-item no-margin selection-list-border ng-star-inserted " +
+                  "selection-list-item no-margin selection-list-border " +
                   (method === "card" ? "selected" : "")
                 }
                 tabIndex={0}
                 aria-checked={method === "card"}
-                onClick={() => {
-                  setMethod("card");
-                  setCardWarning(true);
+                onClick={() => setMethod("card")}
+                style={{
+                  border: method === "card" ? "2px solid #FF6B6B" : "1px solid #ddd",
+                  borderRadius: 10,
+                  padding: 12,
+                  cursor: "pointer",
+                  opacity: 0.8,
                 }}
               >
-                <div className="sl-radiobutton ng-star-inserted">
+                <div className="sl-radiobutton">
                   <div className="styled-checkbox theme-switch-bg theme-switch-border no-padding-right">
-                    <input
-                      type="radio"
-                      className="radio-input"
-                      checked={method === "card"}
-                      readOnly
-                    />
+                    <input type="checkbox" checked={method === "card"} readOnly />
                     <label className="label"></label>
                   </div>
                 </div>
 
-                <div className="sl-description ng-star-inserted">
+                <div className="sl-description">
                   <span className="sl-title theme-text-color">
-                    Pagamento com Cartão de Crédito
+                    Cartão de Crédito
                   </span>
-                  <span className="sl-info ng-star-inserted" style={{ color: "#d9534f" }}>
-                    Indisponível no momento — recomendamos PIX
+                  <span
+                    className="sl-info"
+                    style={{ color: "#d9534f", fontWeight: 600 }}
+                  >
+                    Indisponível no momento
                   </span>
                 </div>
 
-                <div className="sl-icon ng-star-inserted">
+                <div className="sl-icon">
                   <i className="icon icon-card theme-text-variant-color"></i>
                 </div>
               </li>
-
             </ul>
 
-            {/* MENSAGEM DE CARTÃO INDISPONÍVEL */}
-            {cardWarning && (
+            {/* MENSAGEM INDISPONÍVEL */}
+            {method === "card" && (
               <div
                 style={{
-                  background: "#fff2f2",
-                  border: "1px solid #ffcccc",
+                  background: "#FFF1F1",
+                  border: "1px solid #FFB5B5",
                   padding: 12,
                   borderRadius: 8,
-                  marginTop: 10,
+                  marginTop: 12,
                 }}
               >
-                <strong style={{ color: "#c30000" }}>Pagamento com cartão indisponível.</strong>
-                <p style={{ margin: "6px 0 0 0", color: "#7a0000" }}>
-                  Estamos com instabilidade nas operadoras. Utilize PIX para concluir seu pedido.
+                <strong style={{ color: "#C30000" }}>
+                  Pagamento com cartão indisponível.
+                </strong>
+                <p style={{ marginTop: 6, color: "#7a0000" }}>
+                  Utilize PIX para concluir seu pedido rapidamente.
                 </p>
               </div>
             )}
 
             {/* BOTÕES */}
-            <div style={{ marginTop: 20 }}>
+            <div style={{ marginTop: 25 }}>
               <button
                 className="btn btn-primary btn-lg btn-block"
                 onClick={handleProceed}
+                disabled={method !== "pix"}
               >
-                Prosseguir
+                Prosseguir com PIX
               </button>
 
               <button
-                className="btn btn-default btn-lg btn-block"
+                className="btn btn-default btn-block"
                 onClick={onBack}
-                style={{ marginTop: 10 }}
+                style={{
+                  marginTop: 10,
+                  padding: "10px 12px",
+                  borderRadius: 8,
+                  fontSize: 14,
+                }}
               >
                 Voltar
               </button>

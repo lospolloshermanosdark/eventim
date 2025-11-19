@@ -19,6 +19,7 @@ type PixResponse = {
 export default function PixPage() {
   const params = useSearchParams();
   const router = useRouter();
+  const [copied, setCopied] = useState(false);
 
   // ====== PARAMETROS DO PEDIDO ======
   const amount = params.get("amount") ?? "0";
@@ -41,7 +42,7 @@ export default function PixPage() {
   // ====== BODY PARA API ======
   const body = useMemo(
     () => ({
-amount: Number(amount) * 100,
+      amount: Number(amount) * 100,
       paymentMethod: "pix",
       customer: {
         name,
@@ -52,7 +53,7 @@ amount: Number(amount) * 100,
       items: [
         {
           title,
-unitPrice: Number(unitPrice) * 100,
+          unitPrice: Number(unitPrice) * 100,
           quantity: 1,
           tangible: true,
           externalRef,
@@ -172,100 +173,124 @@ unitPrice: Number(unitPrice) * 100,
                 </h2>
                 <p className="theme-text-color" style={{ marginTop: -10 }}>
                   {title} — R$ {Number(amount).toFixed(2).replace(".", ",")}
-
                 </p>
 
-                {/* ÁREA PIX */}
+                {/* GRID RESPONSIVO */}
+                {/* GRID AJUSTADO */}
                 <div
-                  className="col-xs-12"
+                  className="pix-container"
                   style={{
                     marginTop: 20,
-                    display: "flex",
-                    gap: 24,
-                    flexWrap: "wrap",
+                    display: "grid",
+                    gap: 32,
+                    justifyContent: "center",
                   }}
                 >
-                  {/* QR CODE */}
-                  <div style={{ flex: "1 1 300px", textAlign: "center" }}>
-                    <div
-                      style={{
-                        padding: 18,
-                        borderRadius: 14,
-                        background: "#fafbff",
-                        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.6)",
-                        display: "inline-block",
-                      }}
-                    >
-                      {loading && (
-                        <div style={{ padding: 40 }}>Gerando PIX...</div>
-                      )}
-
-                      {!loading && qrImage && (
+                  {/* ESQUERDA - QR CODE */}
+                  <div
+                    style={{
+                      background: "linear-gradient(180deg,#fff,#f5f7fb)",
+                      borderRadius: 16,
+                      padding: 20,
+                      boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+                      width: "100%",
+                      maxWidth: 420, // 🔥 tamanho perfeito
+                      margin: "0 auto",
+                    }}
+                  >
+                    {loading ? (
+                      <div style={{ padding: 40, fontSize: 16 }}>
+                        Gerando PIX…
+                      </div>
+                    ) : (
+                      <>
+                        {/* QR */}
                         <img
-                          src={qrImage}
-                          alt="QR Code PIX"
+                          src={qrImage ?? ""}
+                          alt="QR Code"
                           style={{
-                            width: 260,
-                            height: 260,
-                            borderRadius: 12,
+                            width: "100%",
+                            maxWidth: 300,
+                            display: "block",
+                            margin: "0 auto",
                           }}
                         />
-                      )}
 
-                      {!loading && !qrImage && (
-                        <div style={{ padding: 28, color: "#888" }}>
-                          QR não disponível
-                        </div>
-                      )}
-                    </div>
+                        {/* COPIA E COLA */}
+                        <textarea
+                          readOnly
+                          value={pixData?.pix?.qrcode ?? ""}
+                          style={{
+                            width: "100%",
+                            height: 90,
+                            marginTop: 15,
+                            borderRadius: 8,
+                            padding: 10,
+                            fontSize: 14,
+                            border: "1px solid #d4d8e1",
+                          }}
+                        />
 
-                    {/* Copia e Cola */}
-                    <textarea
-                      readOnly
-                      value={pixData?.pix?.qrcode ?? ""}
-                      style={{
-                        width: "100%",
-                        height: 90,
-                        marginTop: 15,
-                        borderRadius: 8,
-                        padding: 10,
-                        fontSize: 14,
-                      }}
-                    />
+                        <button
+                          className="btn btn-primary btn-lg btn-block"
+                          style={{ marginTop: 10 }}
+                          onClick={() => {
+                            navigator.clipboard.writeText(
+                              pixData?.pix?.qrcode ?? ""
+                            );
+                            setCopied(true);
+                            setTimeout(() => setCopied(false), 2500);
+                          }}
+                        >
+                          Copiar código PIX
+                        </button>
 
-                    <button
-                      className="btn btn-primary btn-lg btn-block"
-                      onClick={() =>
-                        navigator.clipboard.writeText(
-                          pixData?.pix?.qrcode ?? ""
-                        )
-                      }
-                      style={{ marginTop: 10 }}
-                    >
-                      Copiar código PIX
-                    </button>
-
-                    <p style={{ marginTop: 12 }}>
-                      {paid
-                        ? "Pagamento confirmado — redirecionando…"
-                        : "Aguardando pagamento. Atualização a cada 3s."}
-                    </p>
+                        <p
+                          style={{
+                            marginTop: 12,
+                            textAlign: "center",
+                            color: "#555",
+                          }}
+                        >
+                          {paid
+                            ? "Pagamento confirmado — redirecionando…"
+                            : "Aguardando pagamento. Atualização a cada 3s."}
+                        </p>
+                      </>
+                    )}
                   </div>
 
-                  {/* RESUMO */}
-                  <div style={{ width: 320 }}>
+                  {/* DIREITA - RESUMO */}
+                  <div
+                    style={{
+                      width: "100%",
+                      maxWidth: 360,
+                      margin: "0 auto",
+                    }}
+                  >
                     <div
                       style={{
-                        padding: 16,
-                        borderRadius: 10,
                         background: "#fff",
-                        border: "1px solid #f0f0f5",
+                        borderRadius: 12,
+                        padding: 18,
+                        border: "1px solid #e6e8ee",
+                        boxShadow: "0 3px 10px rgba(0,0,0,0.04)",
                       }}
                     >
-                      <div style={{ fontWeight: 700 }}>Resumo</div>
+                      <div style={{ fontWeight: 700, fontSize: 18 }}>
+                        Resumo do Pedido
+                      </div>
 
-                      <div style={{ marginTop: 8, color: "#555" }}>
-                        {title} • Quantidade: 1
+                      <div
+                        style={{
+                          marginTop: 14,
+                          color: "#555",
+                          fontSize: 15,
+                          borderBottom: "1px solid #eee",
+                          paddingBottom: 12,
+                        }}
+                      >
+                        {title} • 1 unidade
                       </div>
 
                       <div
@@ -274,20 +299,22 @@ unitPrice: Number(unitPrice) * 100,
                           display: "flex",
                           justifyContent: "space-between",
                           fontWeight: 700,
+                          fontSize: 17,
                         }}
                       >
                         <span>Total</span>
-                        <span>R$ {Number(amount).toFixed(2).replace(".", ",")}</span>
+                        <span>
+                          R$ {Number(amount).toFixed(2).replace(".", ",")}
+                        </span>
                       </div>
 
-                      <div style={{ marginTop: 12 }}>
-                        <button
-                          onClick={() => router.push("/checkout")}
-                          className="btn btn-default btn-lg btn-block"
-                        >
-                          Voltar e alterar
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => router.push("/checkout")}
+                        className="btn btn-default btn-lg btn-block"
+                        style={{ marginTop: 16 }}
+                      >
+                        Voltar e alterar
+                      </button>
                     </div>
 
                     <p
@@ -295,13 +322,33 @@ unitPrice: Number(unitPrice) * 100,
                         marginTop: 12,
                         fontSize: 13,
                         color: "#555",
+                        lineHeight: "18px",
+                        textAlign: "center",
                       }}
                     >
-                      A transmissão deste pagamento ocorre em ambiente seguro e
-                      criptografado.
+                      Pagamento protegido com criptografia avançada. Suas
+                      informações permanecem seguras durante todo o processo.
                     </p>
                   </div>
                 </div>
+
+                <style>
+                  {`
+/* DESKTOP */
+@media (min-width: 992px) {
+  .pix-container {
+    grid-template-columns: 420px 360px; /* 🔥 Layout perfeito */
+  }
+}
+
+/* MOBILE */
+@media (max-width: 991px) {
+  .pix-container {
+    grid-template-columns: 1fr;
+  }
+}
+`}
+                </style>
 
                 {/* ERRO */}
                 {error && (
@@ -315,6 +362,38 @@ unitPrice: Number(unitPrice) * 100,
           </div>
         </div>
       </div>
+      {/* TOAST de Copiado */}
+      {copied && (
+        <div className="pix-toast">Código PIX copiado com sucesso!</div>
+      )}
+
+      <style>
+        {`
+.pix-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #198754; /* verde elegante */
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  z-index: 9999;
+
+  animation: fadeInOut 2.5s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  10%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  90%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+`}
+      </style>
     </>
   );
 }

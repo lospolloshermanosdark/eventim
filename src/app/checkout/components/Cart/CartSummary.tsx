@@ -9,13 +9,23 @@ type CartSummaryProps = {
   venue: string;
   date: string;
   subtotal: string;
-
+  hideActions?: boolean;
   onContinue?: () => void;
   onBack?: () => void;
 };
 
 export default function CartSummary(props: CartSummaryProps) {
-  const { quantity, eventName, price, venue, date, subtotal, onContinue, onBack } = props;
+  const {
+    quantity,
+    eventName,
+    price,
+    venue,
+    date,
+    subtotal,
+    onContinue,
+    onBack,
+    hideActions,
+  } = props;
 
   useEffect(() => {
     const btnContinue = document.getElementById("btn-summary-continue");
@@ -39,6 +49,48 @@ export default function CartSummary(props: CartSummaryProps) {
     };
   }, [onContinue, onBack]);
 
+  // ===============================
+  // 🔥 Monta o botão Voltar como STRING
+  // ===============================
+  const backButtonHtml =
+    onBack && !hideActions
+      ? `
+    <div class="row margin-top-s">
+      <div class="col-xs-12">
+        <button
+          id="btn-summary-back"
+          type="button"
+          class="btn btn-default btn-lg btn-block theme-button-radius"
+        >
+          Voltar
+        </button>
+      </div>
+    </div>
+  `
+      : "";
+
+  // ===============================
+  // 🔥 Remove botão "continuar" quando hideActions = true
+  // ===============================
+  const continueButtonHtml = !hideActions
+    ? `
+    <div class="row margin-top-m">
+      <div class="col-xs-12">
+        <button
+          id="btn-summary-continue"
+          type="button"
+          class="btn btn-primary btn-lg btn-block theme-interaction-btn-bg theme-btn-font-color theme-btn-font-color-hover theme-button-radius"
+        >
+          Continuar
+        </button>
+      </div>
+    </div>
+  `
+    : "";
+
+  // ===============================
+  // 🔥 HTML FINAL
+  // ===============================
   const html = `
   <div class="row checkout-card-container">
     <div class="col-xs-12">
@@ -93,35 +145,8 @@ export default function CartSummary(props: CartSummaryProps) {
 
             </table>
 
-            <div class="row margin-top-m">
-              <div class="col-xs-12">
-                <button
-                  id="btn-summary-continue"
-                  type="button"
-                  class="btn btn-primary btn-lg btn-block theme-interaction-btn-bg theme-btn-font-color theme-btn-font-color-hover theme-button-radius"
-                >
-                  Continuar
-                </button>
-              </div>
-            </div>
-
-            ${
-              props.onBack
-                ? `
-            <div class="row margin-top-s">
-              <div class="col-xs-12">
-                <button
-                  id="btn-summary-back"
-                  type="button"
-                  class="btn btn-default btn-lg btn-block theme-button-radius"
-                >
-                  Voltar
-                </button>
-              </div>
-            </div>
-            `
-                : ""
-            }
+            ${continueButtonHtml}
+            ${backButtonHtml}
 
           </div>
         </div>
