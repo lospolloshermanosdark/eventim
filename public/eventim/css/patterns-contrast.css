@@ -11268,7 +11268,7 @@ textarea.form-control.error:not(.search-term) {
 .form-control {
   display: block;
   width: 100%;
-  padding: 12px;
+  padding: 6px;
   font-size: 1rem;
   color: var(--legacy-text-color);
   background-color: transparent;
@@ -30760,4 +30760,9 @@ serp-widget.hydrated + .serp-widget-skeleton {
 
 .artwork-image {
     background-image: url(/eventim/imgs/F12026-eventim-artwork.png);
+}
+.card-content {
+  display: flex!important;
+  flex-direction: column!important;
+  justify-content: center!important;
 }

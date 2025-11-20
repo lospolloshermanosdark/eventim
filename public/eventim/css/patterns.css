@@ -11250,7 +11250,7 @@ textarea.form-control.error:not(.search-term) {
 .form-control {
   display: block;
   width: 100%;
-  padding: 12px;
+  padding: 5px;
   font-size: 1rem;
   color: #07446f;
   background-color: transparent;
@@ -29573,7 +29573,7 @@ html.no-touchevents .with-event:hover::before {
   font-size: 1.25rem;
   font-weight: 500;
   margin: 0;
-  line-height: 1.625rem;
+  line-height: 44px;
 }
 .selection-list-headline-icon,
 .selection-list-previous-selection-headline-icon {
@@ -30633,3 +30633,9 @@ serp-widget.hydrated + .serp-widget-skeleton {
     background-image: url(/eventim/imgs/F12026-eventim-artwork.png);
 }
 
+
+.card-content {
+  display: flex!important;
+  flex-direction: column!important;
+  justify-content: center!important;
+}

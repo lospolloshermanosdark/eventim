@@ -1,12 +1,12 @@
 // src/app/checkout/components/Cart/CartPage.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReservationTimer from "../ReservationTimer";
 import CartMain from "./CartMain";
 import CartSummary from "./CartSummary";
 import FooterEventim from "../FooterEventim";
-import DeliveryForm from "./DeliveryForm";
+import DeliveryForm, { DeliveryFormRef } from "./DeliveryForm";
 import PaymentStep from "./PaymentStep";
 
 export default function CartPage() {
@@ -14,6 +14,7 @@ export default function CartPage() {
   const [step, setStep] = useState<
     "carrinho" | "entrega" | "pagamento" | "validacao"
   >("carrinho");
+  const deliveryRef = useRef<DeliveryFormRef>(null);
 
   useEffect(() => {
     // 1. Ler parâmetros da URL
@@ -83,6 +84,7 @@ export default function CartPage() {
 
                 {step === "entrega" && (
                   <DeliveryForm
+                    ref={deliveryRef}
                     onContinue={nextStep}
                     onBack={() => setStep("carrinho")}
                   />
@@ -112,14 +114,18 @@ export default function CartPage() {
                     subtotal={`R$ ${cart.total.toLocaleString("pt-BR")},00`}
                     onContinue={() => {
                       if (step === "carrinho") setStep("entrega");
-                      if (step === "entrega") setStep("pagamento");
+
+                      if (step === "entrega") {
+                        const ok = deliveryRef.current?.triggerSubmit();
+                        if (ok) setStep("pagamento");
+                      }
                     }}
                     onBack={
                       step === "entrega"
                         ? () => setStep("carrinho")
                         : step === "pagamento"
-                        ? () => setStep("entrega")
-                        : undefined
+                          ? () => setStep("entrega")
+                          : undefined
                     }
                   />
                 </div>
