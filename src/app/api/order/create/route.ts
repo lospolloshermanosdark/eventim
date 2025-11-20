@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     // 2 — Enviar email "Pedido criado - Pague seu PIX"
     if (customer_email) {
      await resend.emails.send({
-  from: "Eventim <noreply@eventim-ingressos.site>",
+  from: "Eventim <contato@eventim-ingressos.site>",
   to: customer_email,
   subject: "Seu Código de Verificação",
   html: templateHTMLPedido

@@ -22,13 +22,15 @@ export default function PixPage() {
   const [copied, setCopied] = useState(false);
 
   // ===== PEGAR CARRINHO E CLIENTE DO LOCALSTORAGE =====
-  const cart = typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("cart") || "null")
-    : null;
+  const cart =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("cart") || "null")
+      : null;
 
-  const customer = typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("customer") || "null")
-    : null;
+  const customer =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("customer") || "null")
+      : null;
 
   useEffect(() => {
     if (!cart || !customer) router.push("/checkout");
@@ -83,10 +85,10 @@ export default function PixPage() {
     [amount, cart, customer]
   );
 
-
-  const savedOrder = typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("currentOrder") || "null")
-    : null;
+  const savedOrder =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("currentOrder") || "null")
+      : null;
 
   useEffect(() => {
     if (savedOrder && savedOrder.status === "pending") {
@@ -98,7 +100,7 @@ export default function PixPage() {
           qrcode: savedOrder.pix_qrcode,
           receiptUrl: null,
           expirationDate: null,
-        }
+        },
       });
 
       // recriar imagem do QR
@@ -164,15 +166,18 @@ export default function PixPage() {
             customer,
           }),
         });
-        localStorage.setItem("currentOrder", JSON.stringify({
-          orderNumber,
-          pix_id: pix.id,
-          pix_qrcode: pix.pix?.qrcode ?? "",
-          amount,
-          title,
-          status: "pending",
-          created_at: Date.now()
-        }));
+        localStorage.setItem(
+          "currentOrder",
+          JSON.stringify({
+            orderNumber,
+            pix_id: pix.id,
+            pix_qrcode: pix.pix?.qrcode ?? "",
+            amount,
+            title,
+            status: "pending",
+            created_at: Date.now(),
+          })
+        );
 
         // polling
         const interval = setInterval(async () => {
@@ -185,11 +190,8 @@ export default function PixPage() {
               setPaid(true);
               setTimeout(() => router.push("/checkout/success"), 1200);
             }
-          } catch { }
+          } catch {}
         }, 3000);
-
-
-
       } catch (e: any) {
         setError(e.message);
       } finally {
@@ -215,6 +217,34 @@ export default function PixPage() {
           margin-top: 20px;
           justify-content: center;
         }
+/* SPINNER EVENTIM */
+.spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+  gap: 12px;
+}
+
+.spinner-circle-checkout {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #d8d8d8;
+  border-top-color: #0B74FF;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spinner-message-checkout {
+  font-size: 15px;
+  color: #333;
+}
 
         @media (min-width: 992px) {
           .pix-wrapper {
@@ -279,7 +309,10 @@ export default function PixPage() {
         }
       `}</style>
 
-      <div className="checkout-wrapper-container" style={{ background: "#f3f4f7" }}>
+      <div
+        className="checkout-wrapper-container"
+        style={{ background: "#f3f4f7" }}
+      >
         <div className="wrapper wrapper-container">
           <HeaderCheckout />
 
@@ -288,7 +321,6 @@ export default function PixPage() {
             style={{ marginTop: 40, padding: 24, borderRadius: 16 }}
           >
             <div className="card-content">
-
               <h2 className="selection-list-headline u-font-weight-bold">
                 Pague com PIX
               </h2>
@@ -298,20 +330,25 @@ export default function PixPage() {
               </div>
 
               <p style={{ marginTop: 10, textAlign: "center" }}>
-                {title} — <strong>R$ {formatBR(amount)}
-                </strong>
+                {title} — <strong>R$ {formatBR(amount)}</strong>
               </p>
 
               {/* GRID */}
               <div className="pix-wrapper">
-
                 {/* Caixa PIX */}
                 <div className="pix-card">
                   {loading ? (
-                    <p style={{ textAlign: "center" }}>Gerando PIX…</p>
+                    <div className="spinner-wrapper">
+                      <div className="spinner-circle-checkout"></div>
+                      <div className="spinner-message-message">Gerando PIX…</div>
+                    </div>
                   ) : (
                     <>
-                      <img src={qrImage ?? ""} className="qr-img" alt="QR Code" />
+                      <img
+                        src={qrImage ?? ""}
+                        className="qr-img"
+                        alt="QR Code"
+                      />
 
                       <textarea
                         readOnly
@@ -330,7 +367,9 @@ export default function PixPage() {
                         className="btn btn-primary btn-lg btn-block"
                         style={{ marginTop: 12 }}
                         onClick={() => {
-                          navigator.clipboard.writeText(pixData?.pix?.qrcode ?? "");
+                          navigator.clipboard.writeText(
+                            pixData?.pix?.qrcode ?? ""
+                          );
                           setCopied(true);
                           setTimeout(() => setCopied(false), 2500);
                         }}
@@ -339,7 +378,9 @@ export default function PixPage() {
                       </button>
 
                       <p style={{ marginTop: 10, textAlign: "center" }}>
-                        {paid ? "Pagamento confirmado!" : "Aguardando pagamento…"}
+                        {paid
+                          ? "Pagamento confirmado!"
+                          : "Aguardando pagamento…"}
                       </p>
                     </>
                   )}
@@ -347,7 +388,9 @@ export default function PixPage() {
 
                 {/* RESUMO DO PEDIDO */}
                 <div className="pix-card">
-                  <h3 style={{ fontSize: 20, fontWeight: 700 }}>Resumo do Pedido</h3>
+                  <h3 style={{ fontSize: 20, fontWeight: 700 }}>
+                    Resumo do Pedido
+                  </h3>
 
                   <div className="summary-line">
                     {title} — {cart?.quantity} unidade(s)
@@ -377,7 +420,9 @@ export default function PixPage() {
               </div>
 
               {error && (
-                <div style={{ marginTop: 14, color: "red", textAlign: "center" }}>
+                <div
+                  style={{ marginTop: 14, color: "red", textAlign: "center" }}
+                >
                   {error}
                 </div>
               )}

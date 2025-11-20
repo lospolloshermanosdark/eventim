@@ -12,22 +12,28 @@ interface PaymentStepProps {
 export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepProps) {
   const router = useRouter();
   const [method, setMethod] = useState<"pix" | "card" | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleProceed = () => {
-    if (method === "pix") {
-      const params = new URLSearchParams({
-        amount: String(cart.total),
-        title: cart.setor,
-        unitPrice: String(cart.preco),
-        quantity: "1",
-        name: cart.nome ?? "Cliente",
-        email: cart.email ?? "cliente@email.com",
-        phone: cart.phone ?? "00000000000",
-        cpf: cart.cpf ?? "00000000000",
-      });
+    if (method !== "pix") return;
 
+    setLoading(true); // 🔥 ativa spinner
+
+    const params = new URLSearchParams({
+      amount: String(cart.total),
+      title: cart.setor,
+      unitPrice: String(cart.preco),
+      quantity: "1",
+      name: cart.nome ?? "Cliente",
+      email: cart.email ?? "cliente@email.com",
+      phone: cart.phone ?? "00000000000",
+      cpf: cart.cpf ?? "00000000000",
+    });
+
+    // delay para o spinner aparecer
+    setTimeout(() => {
       router.push(`/checkout/pix?${params.toString()}`);
-    }
+    }, 300);
   };
 
   return (
@@ -35,7 +41,6 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
       <div className="row card standard-gray-shadow theme-content-bg theme-text-color checkout-card-container">
         <div className="card-content">
 
-          {/* TÍTULO */}
           <div className="col-xs-12 card-section">
             <h2 className="selection-list-headline theme-headline-color u-font-weight-bold">
               Escolha sua Forma de Pagamento
@@ -43,9 +48,7 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
 
             <ul data-qa="list" className="selection-list">
 
-              {/* ===================== */}
-              {/*       PIX            */}
-              {/* ===================== */}
+              {/* PIX */}
               <li
                 role="radio"
                 className={
@@ -70,7 +73,7 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                 </div>
 
                 <div className="sl-description">
-                  <span className="sl-title theme-text-color" title="PIX">PIX</span>
+                  <span className="sl-title theme-text-color">PIX</span>
                   <span className="sl-info">Pagamento instantâneo</span>
                 </div>
 
@@ -79,9 +82,7 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                 </div>
               </li>
 
-              {/* ===================== */}
-              {/*   CARTÃO INDISPONÍVEL */}
-              {/* ===================== */}
+              {/* CARTÃO */}
               <li
                 role="radio"
                 className={
@@ -107,13 +108,8 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                 </div>
 
                 <div className="sl-description">
-                  <span className="sl-title theme-text-color">
-                    Cartão de Crédito
-                  </span>
-                  <span
-                    className="sl-info"
-                    style={{ color: "#d9534f", fontWeight: 600 }}
-                  >
+                  <span className="sl-title theme-text-color">Cartão de Crédito</span>
+                  <span className="sl-info" style={{ color: "#d9534f", fontWeight: 600 }}>
                     Indisponível no momento
                   </span>
                 </div>
@@ -124,7 +120,6 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
               </li>
             </ul>
 
-            {/* MENSAGEM INDISPONÍVEL */}
             {method === "card" && (
               <div
                 style={{
@@ -149,9 +144,27 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
               <button
                 className="btn btn-primary btn-lg btn-block"
                 onClick={handleProceed}
-                disabled={method !== "pix"}
+                disabled={method !== "pix" || loading}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}
               >
-                Prosseguir com PIX
+                {loading ? (
+                  <>
+                    <div
+                      className="spinner"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        border: "3px solid #fff",
+                        borderTop: "3px solid transparent",
+                        borderRadius: "50%",
+                        animation: "spin 0.7s linear infinite",
+                      }}
+                    ></div>
+                    Processando…
+                  </>
+                ) : (
+                  "Prosseguir com PIX"
+                )}
               </button>
 
               <button
@@ -167,10 +180,18 @@ export default function PaymentStep({ onBack, onContinue, cart }: PaymentStepPro
                 Voltar
               </button>
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
+
+      {/* CSS spinner */}
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 }

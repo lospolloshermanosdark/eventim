@@ -30766,3 +30766,7 @@ serp-widget.hydrated + .serp-widget-skeleton {
   flex-direction: column!important;
   justify-content: center!important;
 }
+
+.field-error-text{
+    color: #d71919
+}
