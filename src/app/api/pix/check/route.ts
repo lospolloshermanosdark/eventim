@@ -14,7 +14,7 @@ export async function GET(req: Request) {
 
     const credentials = Buffer.from(`${SECRET_KEY}:${COMPANY_ID}`).toString("base64");
 
-    const res = await fetch(`https://api.payfortbr.club/functions/v1/transactions/${txId}`, {
+    const res = await fetch(`https://api.pagloop.com/v1/transactions/${txId}`, {
       method: "GET",
       headers: {
         "Authorization": `Basic ${credentials}`,

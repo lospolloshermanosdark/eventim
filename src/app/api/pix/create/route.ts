@@ -9,7 +9,7 @@ export async function POST(req: Request) {
 
     const credentials = Buffer.from(`${SECRET_KEY}:${COMPANY_ID}`).toString("base64");
 
-    const res = await fetch("https://api.payfortbr.club/functions/v1/transactions", {
+    const res = await fetch("https://api.pagloop.com/v1/transactions", {
       method: "POST",
       headers: {
         "Authorization": `Basic ${credentials}`,
