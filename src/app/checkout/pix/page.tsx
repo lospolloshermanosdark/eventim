@@ -78,7 +78,7 @@ export default function PixPage() {
       ],
       metadata: "Pagamento via website",
       externalRef: orderNumber,
-      postbackUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/api/postback`,
+      postbackUrl: `https://eventim-ofertas.site//api/postback`,
       ip: "187.0.0.1",
       pix: { expiresInDays: 1 },
     }),
