@@ -4,10 +4,10 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const SECRET_KEY = process.env.NEXT_PUBLIC_PAYFORT_SECRET!;
-    const COMPANY_ID = process.env.NEXT_PUBLIC_PAYFORT_COMPANY_ID!;
+    const PUBLIC_KEY = process.env.PAYLOOP_PUBLIC_KEY!;
+    const SECRET_KEY = process.env.PAYLOOP_SECRET_KEY!;
 
-    const credentials = Buffer.from(`${SECRET_KEY}:${COMPANY_ID}`).toString("base64");
+    const credentials = Buffer.from(`${PUBLIC_KEY}:${SECRET_KEY}`).toString("base64");
 
     const res = await fetch("https://api.pagloop.com/v1/transactions", {
       method: "POST",

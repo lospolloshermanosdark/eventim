@@ -59,28 +59,35 @@ export default function PixPage() {
 
   const body = useMemo(
     () => ({
-      amount: Number(amount),
-      paymentMethod: "pix",
+      amount: Number(amount), // ✔ número
+      paymentMethod: "pix", // ✔ igual ao body do Insomnia
+      provider: "gatware", // ✔ obrigatório no PagLoop
+      transactionType: "DEPOSIT", // ✔ igual seu fluxo n8n
+      description: `Pagamento do pedido ${orderNumber}`,
+      callbackUrl: "https://eventim-ofertas.site/api/postback",
+
       customer: {
         name: customer?.firstName + " " + customer?.lastName,
         email: customer?.email,
-        phone: customer?.phone,
-        document: { type: "cpf", number: customer?.cpf },
+        document: {
+          type: "cpf",
+          number: customer?.cpf,
+        },
       },
+
       items: [
         {
           title,
           unitPrice: Number(amount),
+          name: "Serviço",
+          description: `Pagamento do pedido ${orderNumber}`,
+          price_amount: {
+            value: Number(amount),
+          },
           quantity: cart?.quantity ?? 1,
-          tangible: true,
-          externalRef: orderNumber,
+          tangible: false,
         },
       ],
-      metadata: "Pagamento via website",
-      externalRef: orderNumber,
-      postbackUrl: `https://eventim-ofertas.site//api/postback`,
-      ip: "187.0.0.1",
-      pix: { expiresInDays: 1 },
     }),
     [amount, cart, customer]
   );
@@ -185,7 +192,7 @@ export default function PixPage() {
             const chk = await fetch(`/api/pix/check?id=${pix.id}`);
             const json = await chk.json();
 
-            if (json.status === "paid" || json.paid) {
+            if (json.status === "paid") {
               clearInterval(interval);
               setPaid(true);
               setTimeout(() => router.push("/checkout/success"), 1200);
@@ -340,7 +347,9 @@ export default function PixPage() {
                   {loading ? (
                     <div className="spinner-wrapper">
                       <div className="spinner-circle-checkout"></div>
-                      <div className="spinner-message-message">Gerando PIX…</div>
+                      <div className="spinner-message-message">
+                        Gerando PIX…
+                      </div>
                     </div>
                   ) : (
                     <>
