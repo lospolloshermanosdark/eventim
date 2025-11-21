@@ -53,6 +53,22 @@ export default function RootLayout({
         />
 
         <Script src="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/JavaScript/Inline/optimizely.js?1761734868"></Script>
+  
+    {/* Google Tag base */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17742300300"
+        />
+
+        {/* Configuração */}
+        <Script id="google-ads-init">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17742300300');
+          `}
+        </Script>
       </head>
 
       <body className={`antialiased directionltr tree-1085 ${formula1.variable}`}>
