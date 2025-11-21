@@ -2700,14 +2700,14 @@ export default function F1Main() {
                                 <li>
                                   <a
                                     href="/event?id=setor-b"
-                                    class="internalLink tixLinkArquibancada"
+                                    class="internalLink tixLinkArquibancada tixLinkSoldout"
                                     >SETOR B</a
                                   >
                                 </li>
                                 <li>
                                   <a
                                     href="/event?id=setor-d"
-                                    class="internalLink tixLinkArquibancada"
+                                    class="internalLink tixLinkArquibancada tixLinkSoldout"
                                     >SETOR D</a
                                   >
                                 </li>
@@ -2721,7 +2721,7 @@ export default function F1Main() {
                                 <li>
                                   <a
                                     href="/event?id=setor-h"
-                                    class="internalLink tixLinkArquibancada"
+                                    class="internalLink tixLinkArquibancada tixLinkSoldout"
                                     >SETOR H</a
                                   >
                                 </li>
@@ -2742,21 +2742,21 @@ export default function F1Main() {
                                 <li>
                                   <a
                                     href="/event?id=orange-tree-club"
-                                    class="internalLink tixLinkPremium"
+                                    class="internalLink tixLinkPremium tixLinkSoldout"
                                     >Orange Tree Club</a
                                   >
                                 </li>
                                 <li>
                                   <a
                                     href="/event?id=pit-stop-club"
-                                    class="internalLink tixLinkPremium"
+                                    class="internalLink tixLinkPremium tixLinkSoldout"
                                     >Pit Stop Club</a
                                   >
                                 </li>
                                 <li>
                                   <a
                                     href="/event?id=grand-prix-club"
-                                    class="internalLink tixLinkVip"
+                                    class="internalLink tixLinkVip tixLinkSoldout"
                                     >Grand Prix Club</a
                                   >
                                 </li>
