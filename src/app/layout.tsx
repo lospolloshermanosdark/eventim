@@ -40,11 +40,22 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-    
-        <link rel="stylesheet" href="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/fontawesome/css/v4-shims.min.css?1761734868" />
-        <link rel="stylesheet" href="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/fontawesome/css/v5-font-face.min.css?1761734868" />
-        <link rel="stylesheet" href="https://www.eventim.com.br/campaign/typo3temp/assets/compressed/merged-9216f1d014c79912b204fd6666370876.css?1762783130" />
-        <link rel="stylesheet" href="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/fontawesome/css/all.css?1761734868" />
+        <link
+          rel="stylesheet"
+          href="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/fontawesome/css/v4-shims.min.css?1761734868"
+        />
+        <link
+          rel="stylesheet"
+          href="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/fontawesome/css/v5-font-face.min.css?1761734868"
+        />
+        <link
+          rel="stylesheet"
+          href="https://www.eventim.com.br/campaign/typo3temp/assets/compressed/merged-9216f1d014c79912b204fd6666370876.css?1762783130"
+        />
+        <link
+          rel="stylesheet"
+          href="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/fontawesome/css/all.css?1761734868"
+        />
         {/* Scripts globais usados pelo site inteiro */}
 
         <Script
@@ -53,27 +64,37 @@ export default function RootLayout({
         />
 
         <Script src="https://www.eventim.com.br/campaign/_assets/e20b97eb2f49e269a0238d41d5a90e2e/JavaScript/Inline/optimizely.js?1761734868"></Script>
-  
-    {/* Google Tag base */}
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17742300300"
-        />
-
-        {/* Configuração */}
-        <Script id="google-ads-init">
+        {/* Google Tag Manager */}
+        <Script id="gtm-script">
           {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-17742300300');
+            (function(w,d,s,l,i){
+              w[l]=w[l]||[];
+              w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+              var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),
+              dl=l!='dataLayer'?'&l='+l:'';
+              j.async=true;
+              j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+              f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-K3R9PNXK');
           `}
         </Script>
       </head>
 
-      <body className={`antialiased directionltr tree-1085 ${formula1.variable}`}>
-        {children}
+      <body
+        className={`antialiased directionltr tree-1085 ${formula1.variable}`}
+      >
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-K3R9PNXK"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          ></iframe>
+        </noscript>
 
+        {children}
 
         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -82,9 +103,7 @@ export default function RootLayout({
 
         <Script src="/js/script.js" strategy="afterInteractive" />
         <Script src="/js/menu.js" strategy="afterInteractive" />
-<Script src="/js/mobile-menu.js" strategy="afterInteractive" />
-
-        
+        <Script src="/js/mobile-menu.js" strategy="afterInteractive" />
       </body>
     </html>
   );
